@@ -8,6 +8,7 @@ import { Navbar, Nav, NavItem, Card, Button, CardTitle, CardBody, Row, Col, Inpu
 import Login from './LoginComponent';
 import Authority from './AuthorityComponent';
 import Official from './OfficialComponent';
+import Prediction from './PredictionComponent';
 import { KISAAN_ABI, KISAAN_ADDRESS } from './config';
 
 
@@ -22,6 +23,8 @@ class App extends Component {
             officialLoggedIn: localStorage.getItem('ol'),
             authorityPassword: localStorage.getItem('ap'),
             officialPassword: localStorage.getItem('op'),
+            showPrediction: false,
+            showLogin: false,
         }
 
         this.authorityLogin = this.authorityLogin.bind(this);
@@ -61,6 +64,7 @@ class App extends Component {
             console.log(transactionHash);
             this.setState({authorityLoggedIn : true});
             this.setState({authorityPassword : hash.digest('hex')});
+            this.setState({showPrediction: false, showLogin: false})
             localStorage.setItem('al',true);
             localStorage.setItem('ap',hash.digest('hex'));
         })
@@ -76,6 +80,7 @@ class App extends Component {
             console.log(transactionHash);
             this.setState({officialLoggedIn : true});
             this.setState({officialPassword : hash.digest('hex')});
+            this.setState({showPrediction: false, showLogin: false})
             localStorage.setItem('ol',true);
             localStorage.setItem('op',hash.digest('hex'));
         })
@@ -91,6 +96,7 @@ class App extends Component {
         this.setState({officialPassword : ''});
         this.setState({authorityLoggedIn : false});
         this.setState({authorityPassword : ''});
+        this.setState({showPrediction: false, showLogin: true})
     }
 
     addOfficial(address,name,password,isValidator){
@@ -145,8 +151,22 @@ class App extends Component {
                 <Navbar style={{backgroundColor: "#1b5e20"}}>
                     <Nav className="flex-row" navbar>
                         <NavItem>
-                            <h1 style={{color: "white"}}>AGRITECH</h1>
+                            <a href="#"><h1 style={{color: "white"}} onClick={() => this.setState({showPrediction: false, showLogin: false})}>AGRITECH</h1></a>
                         </NavItem>
+                        {!this.state.authorityLoggedIn && !this.state.officialLoggedIn
+                            ?
+                            <React.Fragment>
+                             <NavItem>
+                            <a href="#"><h3 style={{color: "white"}} className="mt-2 mx-5" onClick={() => this.setState({showPrediction: true, showLogin: false})}>Profit Seed</h3></a>
+                        </NavItem>
+                        <NavItem>
+                            <a href="#"><h3 style={{color: "white"}} className="mt-2" onClick={() => this.setState({showLogin: true, showPrediction: false})}>Sell Your Commodity</h3></a>
+                        </NavItem>
+                        </React.Fragment>
+                        :
+                        null
+                        }
+                       
                         <NavItem className="ml-auto">
                             {this.state.authorityLoggedIn || this.state.officialLoggedIn ? 
                              <Button color="primary" style={{marginLeft: 1050, marginTop: 10}} onClick={this.logout}>Logout</Button>
@@ -156,9 +176,33 @@ class App extends Component {
                         </NavItem>
                     </Nav>
                 </Navbar>
-                {!this.state.authorityLoggedIn && !this.state.officialLoggedIn 
+                {!this.state.authorityLoggedIn && !this.state.officialLoggedIn && !this.state.showLogin && !this.state.showPrediction
                 ?
+                <Row style={{ marginTop: "17vh", justifyContent: "center"}}>
+                    <Col className="col-md-7" >
+                        <Card style={{borderColor: "black", borderWidth: "3px"}}>
+                            <CardTitle className="text-center" style={{backgroundColor: "#1b5e20", color: 'white', fontSize: 30}}>
+                                About AgriTech
+                            </CardTitle>
+                            <CardBody>
+                                AgriTech is an effort to make the best use of the 2 of the most world-changing technologies, viz., Machine Learning
+                                and Blockchain to enhance the lives of farmers.
+                                <br /><br />
+                                We use Machine Learning to predict the crop which would have the highest selling price given your location
+                                and month.
+                                <br /><br />
+                                We extend this project using Blockchain to carry forward the supply chain, to help farmers receive all the revenue they
+                                are supposed to receive instead of those funds being stolen by middlemen.
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+                :
+                this.state.showLogin ?
                 <Login authorityLogin={this.authorityLogin} officialLogin={this.officialLogin} />
+                :
+                this.state.showPrediction ?
+                <Prediction />
                 :
                 this.state.authorityLoggedIn 
                 ?
