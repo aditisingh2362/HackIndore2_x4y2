@@ -1,4 +1,4 @@
-# Hackindore
+# AgriTech
 AgriTech is an effort to make the best use of the 2 of the most world-changing technologies, viz., Machine Learning and Blockchain to enhance the lives of farmers.
 
 We use Machine Learning to predict the crop which would have the highest selling price given your location and month.
