@@ -11,4 +11,5 @@ Metamask Chrome Extension(to interact with the blockchain), Ganache(to create a 
 
 Clone the repository and run ```npm install``` to install all the dependencies.
 Make sure Ganache is up and running, metamask is connected to a private network HTTP://127.0.0.1:7545 and then run ```truffle compile``` and ```truffle migrate --reset``` to generate Address and ABI of the Smart Contract which will be available at build/contracts/kisaan.json. Copy the Address and ABI and paste the same in config.js.
+Run ```python model.py``` and then ```python app.py``` to start the Flask server.
 Run ```yarn start``` to run the React server.
