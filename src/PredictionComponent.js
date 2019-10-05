@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem, Card, Button, CardTitle, CardBody, Row, Col, Input, Label, Form, FormGroup } from 'reactstrap';
-import { districts } from './data.js'
+import { districts } from './data.js';
 
-class Login extends Component{
+class Prediction extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			authorityPassword: '',
-			officialPassword: '',
 			district: 'Mainpuri',
 			market: 'Mainpuri',
 			month: '7',
@@ -17,19 +15,8 @@ class Login extends Component{
 			curMarket: '',
 		};
 
-		this.handleAuthorityLogin = this.handleAuthorityLogin.bind(this);
-		this.handleOfficialLogin = this.handleOfficialLogin.bind(this);
 		this.predict = this.predict.bind(this);
 		// this.changedState = this.changedState.bind(this);
-	}
-
-
-	handleAuthorityLogin(){
-		this.props.authorityLogin(this.state.authorityPassword);
-	}
-
-	handleOfficialLogin(){
-		this.props.officialLogin(this.state.officialPassword);
 	}
 
 	predict(){
@@ -59,11 +46,7 @@ class Login extends Component{
 	    })
 	}
 
-
-	
-
 	render(){
-
 		const changedMarket = (event) => {
 			this.setState({
 				curMarket: event.target.value
@@ -109,57 +92,73 @@ class Login extends Component{
 
 		return(
 			<React.Fragment>
-				<Row style={{ marginTop: "25vh"}}>
-					<Col className="col-md-5 mx-5">
+			<Row style={{ marginTop: "20vh", justifyContent: "center"}}>
+					<Col className="col-md-5" >
 						<Card style={{borderColor: "black", borderWidth: "3px"}}>
 							<CardTitle className="text-center" style={{backgroundColor: "#1b5e20", color: 'white', fontSize: 30}}>
-								Central Authority Login
+								Predict Profit Seed
 							</CardTitle>
 							<CardBody>
-								<Row>
-									<Col className = "col-md-4 my-auto">
-										Enter Password : 
-									</Col>
-									<Col className = "col-md">
-										<Input placeholder="Password" type="password" onChange={(event) => this.setState({authorityPassword: event.target.value})}/>
-									</Col>
-								</Row>
-								<Row style={{justifyContent: 'center'}} className="mt-3">
-									<Button style={{backgroundColor: "#1b5e20"}} onClick={this.handleAuthorityLogin}>
-										Login
-									</Button>
-								</Row>
-							</CardBody>
-						</Card>
-					</Col>
 
-					<Col className="col-md-5 mx-5">
-						<Card style={{borderColor: "black", borderWidth: "3px"}}>
-							<CardTitle className="text-center" style={{backgroundColor: "#1b5e20", color: 'white', fontSize: 30}}>
-								Government Official Login
-							</CardTitle>
-							<CardBody>
-								<Row>
-									<Col className = "col-md-4 my-auto">
-										Enter Password : 
-									</Col>
-									<Col className = "col-md">
-										<Input placeholder="Password" type="password" onChange={(event) => this.setState({officialPassword: event.target.value})}/>
-									</Col>
+								<Form>
+									<FormGroup>
+										<Row>
+										<Label for="State" className = "col-md-5 my-auto">Select District : </Label>
+										<Input type="select" name="State" className = "col-md" id="State" onChange={changedDistrict}>
+											<option> Select District </option>
+								        	{loadDistricts}
+								        </Input>
+								        </Row>
+									</FormGroup>
+									{getMarkets}
+									<FormGroup className="mt-3">
+										<Row>
+										<Label for="Month" className = "col-md-5 my-auto">Select Month : </Label>
+										<Input type="select" name="Month" className = "col-md" id="Month">
+											<option> Select Month </option>
+								        	<option> 1 </option>
+								        	<option> 2 </option>
+								        	<option> 3 </option>
+								        	<option> 4 </option>
+								        	<option> 5 </option>
+								        	<option> 6 </option>
+								        	<option> 7 </option>
+								        	<option> 8 </option>
+								        	<option> 9 </option>
+								        	<option> 10 </option>
+								        	<option> 11 </option>
+								        	<option> 12 </option>
+
+								        </Input>
+								        </Row>
+									</FormGroup>
+								</Form>
+								<Row style={{justifyContent: 'center'}} className="mt-3">
+									<Button style={{backgroundColor: "#1b5e20"}} onClick={this.predict}>
+										Predict
+									</Button>
 								</Row>
 								<Row style={{justifyContent: 'center'}} className="mt-3">
-									<Button style={{backgroundColor: "#1b5e20"}} onClick={this.handleOfficialLogin}>
-										Login
-									</Button>
+									{this.state.prediction ? 
+										<React.Fragment>
+										<Row>
+										Profit Seed : 
+										{this.state.prediction} 
+										<br />
+										Modal Price : 
+										{this.state.modal}
+										</Row>
+										
+										</React.Fragment>
+									 : null}
 								</Row>
 							</CardBody>
 						</Card>
 					</Col>
 				</Row>
-				
-			</React.Fragment>
+				</React.Fragment>
 		);
 	}
 }
 
-export default Login;
+export default Prediction;
